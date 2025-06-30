@@ -76,7 +76,13 @@ SELECT
 FROM BGOMEZOLTP.CLIENTE c
 JOIN BGOMEZOLTP.PUNTO p ON c.ID_PUNTO = p.ID_PUNTO;
 
-INSERT INTO BGOMEZ.Dim_Ruta (Id_Ruta_Definida_OLTP, Nombre_Ruta, Distancia_Estimada_KM, Nombre_Centro_Origen, Ciudad_Origen, Region_Origen, Ciudad_Destino, Zona_Destino, Region_Destino)
+-- Carga de Dim_Ruta (Versión Mejorada)
+INSERT INTO BGOMEZ.Dim_Ruta (
+    Id_Ruta_Definida_OLTP, Nombre_Ruta, Distancia_Estimada_KM,
+    Nombre_Centro_Origen, Ciudad_Origen, Region_Origen,
+    Ciudad_Destino, Zona_Destino, Region_Destino,
+    TIPO_DESTINO
+)
 SELECT
     rd.ID_RUTA,
     rd.NOMBRE_RUTA,
@@ -86,11 +92,19 @@ SELECT
     p_origen.REGION_PUNTO,
     p_destino.CIUDAD_PUNTO,
     p_destino.ZONA_PUNTO,
-    p_destino.REGION_PUNTO
-FROM BGOMEZOLTP.RUTA_DEFINIDA rd
-JOIN BGOMEZOLTP.PUNTO p_origen ON rd.ID_PUNTO_ORIGEN = p_origen.ID_PUNTO
-JOIN BGOMEZOLTP.PUNTO p_destino ON rd.ID_PUNTO_DESTINO = p_destino.ID_PUNTO
-LEFT JOIN BGOMEZOLTP.CENTRO_LOGISTICO cl_origen ON p_origen.ID_PUNTO = cl_origen.ID_PUNTO;
+    p_destino.REGION_PUNTO,
+    CASE
+        WHEN c_destino.ID_CLIENTE IS NOT NULL THEN 'Cliente'
+        WHEN cl_destino.ID_CENTRO IS NOT NULL THEN 'Centro de Distribucion'
+        ELSE 'Desconocido'
+END AS TIPO_DESTINO
+FROM
+    BGOMEZOLTP.RUTA_DEFINIDA rd
+    JOIN BGOMEZOLTP.PUNTO p_origen ON rd.ID_PUNTO_ORIGEN = p_origen.ID_PUNTO
+    JOIN BGOMEZOLTP.PUNTO p_destino ON rd.ID_PUNTO_DESTINO = p_destino.ID_PUNTO
+    LEFT JOIN BGOMEZOLTP.CENTRO_LOGISTICO cl_origen ON p_origen.ID_PUNTO = cl_origen.ID_PUNTO
+    LEFT JOIN BGOMEZOLTP.CENTRO_LOGISTICO cl_destino ON p_destino.ID_PUNTO = cl_destino.ID_PUNTO
+    LEFT JOIN BGOMEZOLTP.CLIENTE c_destino ON p_destino.ID_PUNTO = c_destino.ID_PUNTO
 COMMIT;
 
 -- ====================================================================
