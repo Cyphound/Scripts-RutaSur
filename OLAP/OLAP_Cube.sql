@@ -67,8 +67,9 @@ CREATE TABLE Dim_Ruta (
     Ciudad_Origen           VARCHAR2(100 CHAR),
     Region_Origen           VARCHAR2(100 CHAR),
     Ciudad_Destino          VARCHAR2(100 CHAR),
-    Comuna_Destino          VARCHAR2(100 CHAR),
+    Zona_Destino            VARCHAR2(100 CHAR),
     Region_Destino          VARCHAR2(100 CHAR),
+    Tipo_Destino            VARCHAR2(50 CHAR),
     CONSTRAINT pk_dim_ruta PRIMARY KEY (Ruta_Key)
 );
 
