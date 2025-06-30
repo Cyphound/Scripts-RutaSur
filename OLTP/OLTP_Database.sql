@@ -44,7 +44,6 @@ create table TIPO_CARGA
 /*==============================================================*/
 /* Table: CLIENTE                                               */
 /*==============================================================*/
--- CORRECCIÓN: Se ajusta ID_PUNTO para que coincida con la PK de PUNTO.
 create table CLIENTE
 (
    ID_CLIENTE           VARCHAR2(6)          not null,
@@ -66,7 +65,6 @@ create index TIENE_FK on CLIENTE (
 /*==============================================================*/
 /* Table: VEHICULO                                              */
 /*==============================================================*/
--- CORRECCIÓN: Se cambia CAPICADAD_TONELADA a NUMBER para almacenar valores numéricos.
 create table VEHICULO
 (
    PATENTE_VEHICULO     VARCHAR2(6)          not null,
@@ -81,8 +79,6 @@ create table VEHICULO
 /*==============================================================*/
 /* Table: DESPACHO                                              */
 /*==============================================================*/
--- CORRECCIÓN: Se cambia PESO_CARGA_TONELADAS de CLOB a NUMBER.
--- Se eliminan columnas de duración y costo total, ya que son calculables.
 create table DESPACHO
 (
    ID_DESPACHO          VARCHAR2(6)          not null,
@@ -92,7 +88,7 @@ create table DESPACHO
    FECHA_LLEGADA_ESTIMADA DATE,
    FECHA_SALIDA_REAL    DATE,
    FECHA_LLEGADA_REAL   DATE,
-   PESO_CARGA_TONELADAS NUMBER(10, 2), -- CORREGIDO
+   PESO_CARGA_TONELADAS NUMBER(10, 2),
    ESTADO_DESPACHO      VARCHAR2(30),
    OBSERVACIONES_DESPACHO VARCHAR2(500),
    COMBUSTIBLE_CONSUMIDO NUMBER(5),
@@ -129,7 +125,6 @@ create table CLASIFICA_A
 /*==============================================================*/
 /* Table: RUTA_DEFINIDA                                         */
 /*==============================================================*/
--- CORRECCIÓN: Se ajustan ID_PUNTO y se renombra PUN_ID_PUNTO.
 create table RUTA_DEFINIDA
 (
    ID_RUTA              VARCHAR2(6)          not null,
